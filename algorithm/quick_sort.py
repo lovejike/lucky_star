@@ -1,24 +1,22 @@
-
 def quick_sort(input_list, start, end):
     if start >= end:
-        return input_list
-    pivot = input_list[start]
-    i = start
-    j = end
-    while i < j:
-        while i < j and input_list[j] >= pivot:
-            j -= 1
-        input_list[i] = input_list[j]
-        while i < j and input_list[i] < pivot:
-            i += 1
-        input_list[j] = input_list[i]
-    input_list[i] = pivot
-    quick_sort(input_list, start, i - 1)
-    quick_sort(input_list, i + 1, end)
-    return input_list
+        return
+    mid = input_list[start]
+    low = start
+    high = end
+    while low < high:
+        while low < high and input_list[high] >= mid:
+            high -= 1
+        input_list[low] = input_list[high]
+        while low < high and input_list[low] < mid:
+            low += 1
+        input_list[high] = input_list[low]
+    input_list[low] = mid
+    quick_sort(input_list, start, low - 1)
+    quick_sort(input_list, low + 1, end)
 
 
-if __name__ == '__main__':
-    in_list = [3, 5, 6, 2, 1, 4]
-    res = quick_sort(in_list, 0, len(in_list) - 1)
-    print(res)
+if __name__ == "__main__":
+    in_list = [34, 12, 23, 15, 45, 18, 66, 17, 10, 77]
+    quick_sort(in_list, 0, len(in_list) - 1)
+    print(in_list)
