@@ -101,6 +101,54 @@ class IterSolution:
         return res
 
 
+# binary tree所有节点值加一
+def plus_one(root):
+    if not root:
+        return
+    root.val += 1
+    plus_one(root.left)
+    plus_one(root.right)
+
+
+# 两个binary tree是否相等
+def is_same_tree(root1, root2):
+    if root1 is None and root2 is None:
+        return True
+    if root1 is None or root2 is None:
+        return False
+    if root1.val != root2.val:
+        return False
+    return is_same_tree(root1.left, root2.left) and is_same_tree(root1.right, root2.right)
+
+# binary search tree合法性
+def isvalidBST(root):
+    return isvalid2BST(root, None, None)
+
+# 如果是左子树，那么最大值是root，最小值是空；如果是右子树，最大值是空，最小值是root
+def isvalid2BST(root, min, max):
+    if not root:
+        return True
+    if min is not None and min.val > root.val:
+        return False
+    if max is not None and max.val < root.val:
+        return False
+    return isvalid2BST(root.left, min, root) and isvalid2BST(root.right, root, max)
+
+# 判断BST中是否存在一个数
+def isinBST(root, target):
+    if not root:
+        return False
+    if root.val == target:
+        return True
+    if root.val > target:
+        return isinBST(root.left. target)
+    if root.val < target:
+        return isinBST(root.right. target)
+
+
+
+
+
 
 if __name__ == "__main__":
     l1 = TreeNode(1)
@@ -120,3 +168,11 @@ if __name__ == "__main__":
     print(s1.inorder(l1))
     print(s1.postorder(l1))
     print(s1.bfs(l1))
+
+    r1 = TreeNode(6)
+    r1.left = l2
+    r2 = TreeNode(1)
+    r2.right = l2
+    # print(is_same_tree(r1,r2))
+    print(isvalidBST(r1))
+    print(isinBST(r1, 4))

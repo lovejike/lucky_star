@@ -41,7 +41,29 @@ def quick_sort(input_list, start, end):
     quick_sort(input_list, low + 1, end)
 
 
+def part(arr, low, high):
+    i = low - 1
+    pivot = arr[high]
+    print(low)
+    for j in range(low, high):
+        if arr[j] <= pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+    arr[i+1], arr[high] = arr[high], arr[i +1]
+    return (i+1)
+
+
+def qs(arr, low, high):
+    if low < high:
+        p = part(arr, low, high)
+        qs(arr, low, p-1)
+        qs(arr, p+1, high)
+    return arr
+
+
 if __name__ == "__main__":
     in_list = [34, 12, 23, 15, 45, 18, 66, 17, 10, 77]
-    quick_sort(in_list, 0, len(in_list) - 1)
+    #quick_sort(in_list, 0, len(in_list) - 1)
     print(in_list)
+    #print(merge_sort(in_list))
+    print(qs(in_list, 0, 9))
