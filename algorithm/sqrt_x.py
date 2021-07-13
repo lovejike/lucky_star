@@ -12,4 +12,6 @@ def dichotomy_sqrt(x):
 
     return index
 
-print(dichotomy_sqrt(34))
+
+if __name__ == "__main__":
+    print(dichotomy_sqrt(34))

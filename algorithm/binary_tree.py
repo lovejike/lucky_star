@@ -146,10 +146,6 @@ def isinBST(root, target):
         return isinBST(root.right. target)
 
 
-
-
-
-
 if __name__ == "__main__":
     l1 = TreeNode(1)
     l2 = TreeNode(3)
