@@ -134,6 +134,17 @@ def isvalid2BST(root, min, max):
         return False
     return isvalid2BST(root.left, min, root) and isvalid2BST(root.right, root, max)
 
+# 插入一个值
+def insert_value(root, value):
+    if not root:
+        return TreeNode(value)
+    if root.val > value:
+        root.left = insert_value(root.left, value)
+    if root.val < value:
+        root.right = insert_value(root.right, value)
+    return root
+
+
 # 判断BST中是否存在一个数
 def isinBST(root, target):
     if not root:
@@ -141,9 +152,9 @@ def isinBST(root, target):
     if root.val == target:
         return True
     if root.val > target:
-        return isinBST(root.left. target)
+        return isinBST(root.left, target)
     if root.val < target:
-        return isinBST(root.right. target)
+        return isinBST(root.right, target)
 
 
 if __name__ == "__main__":
@@ -172,3 +183,5 @@ if __name__ == "__main__":
     # print(is_same_tree(r1,r2))
     print(isvalidBST(r1))
     print(isinBST(r1, 4))
+    res = insert_value(r1, 9)
+    print(res.val, res.left.val, res.right.val)
