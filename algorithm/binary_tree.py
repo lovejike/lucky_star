@@ -128,9 +128,9 @@ def isvalidBST(root):
 def isvalid2BST(root, min, max):
     if not root:
         return True
-    if min is not None and min.val > root.val:
+    if min is not None and min.val >= root.val:
         return False
-    if max is not None and max.val < root.val:
+    if max is not None and max.val <= root.val:
         return False
     return isvalid2BST(root.left, min, root) and isvalid2BST(root.right, root, max)
 
