@@ -25,25 +25,21 @@ class Solution:
         self._one_path.pop()
         return self._total_res
 
-    #
-# 打印二叉树的所有路径
-class Solution:
-    def __init__(self):
-        self.all_paths = []
+    # 打印二叉树的所有路径
+    def binaryTreePaths(self, root):
+        def get_paths(root, path, res):
+            if root:
+                path.append(str(root.val))
+                left = get_paths(root.left, path, res)
+                right = get_paths(root.right, path, res)
+                if not left and not right:                  # 如果root是叶子结点
+                    res.append("->".join(path))             # 把当前路径加入到结果列表中
+                path.pop()                                  # 返回上一层递归时，要让当前路径恢复原样
+                return True
 
-    def binaryTreePaths(self, root: TreeNode) -> List[str]:
-        return self.traversal_path(root, "")
-
-    def traversal_path(self, root, paths):
-        if not root:
-            return
-        paths = paths + str(root.val)
-        # 如果是叶子结点，加到整体路径中
-        if not root.left and not root.right:
-            self.all_paths.append(paths)
-        self.traversal_path(root.left, paths + "->")
-        self.traversal_path(root.right, paths + "->")
-        return self.all_paths
+        res = []
+        get_paths(root, [], res)
+        return res
 
 
 if __name__ == '__main__':
@@ -55,3 +51,4 @@ if __name__ == '__main__':
     root = nodelist[0]
     s = Solution()
     print(s.find_all_path(root, 11))
+    print(s.binaryTreePaths(root))
