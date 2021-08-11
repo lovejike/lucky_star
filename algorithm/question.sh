@@ -1,22 +1,3 @@
-mysql
-left join / right join
-
-Hadoop 不了解
-
-Linux shell 不熟
-
-docker 接触过
-
-
-
-月底/暑假/偏算法：
-
-
-
-
-
-
-
 
 # part1: hdfs文件存储
 # 1. hdfs读写过程
