@@ -1,4 +1,4 @@
-def maxSubArray(self, nums):
+def maxSubArray(nums):
     size = len(nums)
     if size == 0:
         return None
@@ -13,6 +13,6 @@ def maxSubArray(self, nums):
     return max(dp)
 
 
-if __name__== '__main__':
+if __name__ == '__main__':
     values = [1, -2, 3, 10, -4, 7, 2, -5]
     print(maxSubArray(values))
