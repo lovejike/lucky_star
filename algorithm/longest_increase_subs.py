@@ -49,6 +49,44 @@ class Solution:
             res = max(res, dp_max[i])
         return res
 
+    # 最长公共子序列
+    def lcs_dp(self, input_x, input_y):
+        # input_y as column, input_x as row
+        dp = [([0] * (len(input_y) + 1)) for i in range(len(input_x) + 1)]
+        for i in range(1, len(input_x) + 1):
+            for j in range(1, len(input_y) + 1):
+                if i == 0 or j == 0:  # 在边界上，自行+1
+                    dp[i][j] = 1
+                elif input_x[i - 1] == input_y[j - 1]:  # 不在边界上，相等就加一
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                else:  # 不相等
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+        for dp_line in dp:
+            print(dp_line)
+        return dp[-1][-1]
+
+    # 最长回文子串
+    def lcs3_dp(self, input_x, input_y):
+        # input_y as column, input_x as row
+        dp = [([0] * (len(input_y) + 1)) for i in range(len(input_x) + 1)]
+        maxlen = maxindex = 0
+        for i in range(1, len(input_x) + 1):
+            for j in range(1, len(input_y) + 1):
+                if i == 0 or j == 0:  # 在边界上，自行+1
+                    dp[i][j] = 0
+                if input_x[i - 1] == input_y[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                    if dp[i][j] > maxlen:  # 随时更新最长长度和长度开始的位置
+                        maxlen = dp[i][j]
+                        maxindex = i - maxlen
+                        # print('最长公共子串的长度是:%s' % maxlen)
+                        # print('最长公共子串是:%s' % input_x[maxindex:maxindex + maxlen])
+                else:
+                    dp[i][j] = 0
+        for dp_line in dp:
+            print(dp_line)
+        return maxlen, input_x[maxindex:maxindex + maxlen]
+
 
 if __name__ == '__main__':
     s = Solution()
