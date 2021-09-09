@@ -6,43 +6,17 @@ class TreeNode:
 
 
 class Solution:
-    def preorder(self, root, res=[]):
+
+    def __init__(self):
+        self._one_path = []
+        self._all_path = []
+        self._all_path_2 = []
+
+    def pre_order(self, root):
         if not root:
             return
-        res.append(root.val)
-        if root.left is not None:
-            self.preorder(root.left, res)
-        if root.right is not None:
-            self.preorder(root.right, res)
-        return res
-
-    def inorder(self, root, res=[]):
-        if not root:
-            return
-        if root.left is not None:
-            self.preorder(root.left, res)
-        res.append(root.val)
-        if root.right is not None:
-            self.preorder(root.right, res)
-        return res
-
-    def postorder(self, root, res=[]):
-        if not root:
-            return
-        if root.left:
-            self.postorder(root.left, res)
-        if root.right:
-            self.postorder(root.right, res)
-        res.append(root.val)
-        return res
-
-
-class IterSolution:
-    def preorder(self, root):
-        if not root:
-            return
-        stack = [root]
         res = []
+        stack = [root]
         while stack:
             tmp = stack.pop()
             if tmp:
@@ -51,25 +25,25 @@ class IterSolution:
                 stack.append(tmp.left)
         return res
 
-    def inorder(self, root):
+    def in_order(self, root):
         if not root:
             return
-        stack = []
         res = []
+        stack = []
         while stack or root:
             while root:
                 stack.append(root)
                 root = root.left
-            root = stack.pop()
-            res.append(root.val)
-            root = root.right
+            tmp = stack.pop()
+            res.append(tmp.val)
+            root = tmp.right
         return res
 
-    def postorder(self, root):
+    def post_order(self, root):
         if not root:
             return
-        stack = []
         res = []
+        stack = []
         while stack or root:
             while root:
                 stack.append(root)
@@ -84,104 +58,214 @@ class IterSolution:
             else:
                 root = None
         return res
-    # 层序遍历
-    def bfs(self, root):
+    def cfs(self, root):
         if not root:
             return
         res = []
         queue = [root]
         while queue:
-            len_q = len(queue)
-            for i in range(len_q):
-                q = queue.pop(0)
-                if q:
-                    res.append(q.val)
-                    queue.append(q.left if q.left else None)
-                    queue.append(q.right if q.right else None)
+            for i in range(len(queue)):
+                tmp = queue.pop(0)
+                if tmp:
+                    res.append(tmp.val)
+                    queue.append(tmp.left if tmp.left else None)
+                    queue.append(tmp.right if tmp.right else None)
         return res
 
+    # 路径和固定
+    def find_all_path(self, root, target_num):
 
-# binary tree所有节点值加一
-def plus_one(root):
-    if not root:
-        return
-    root.val += 1
-    plus_one(root.left)
-    plus_one(root.right)
+        if not root:
+            return self._all_path
+        target_num -= root.val
+        self._one_path.append(root.val)
+        if target_num == 0 and root.left is None and root.right is None:
+            self._all_path.append(self._one_path[:])
+        elif target_num > 0:
+            self.find_all_path(root.left, target_num)
+            self.find_all_path(root.right, target_num)
+        self._one_path.pop()
+        return self._all_path
+    # 全部路径
+    def all_tree_path(self, root):
+        def get_path(root, path, res):
+            if not root:
+                return
+            path.append(str(root.val))
+            left = get_path(root.left, path, res)
+            right = get_path(root.right, path, res)
+            if not left and not right:
+                res.append("->".join(path))
+            path.pop()
+            return True
+        res = []
+        get_path(root, [], res)
+        return res
 
+    # binary tree所有节点值加一
+    def plus_one(self, root):
+        if not root:
+            return
+        root.val += 1
+        self.plus_one(root.left)
+        self.plus_one(root.right)
 
-# 两个binary tree是否相等
-def is_same_tree(root1, root2):
-    if root1 is None and root2 is None:
-        return True
-    if root1 is None or root2 is None:
-        return False
-    if root1.val != root2.val:
-        return False
-    return is_same_tree(root1.left, root2.left) and is_same_tree(root1.right, root2.right)
+    # 两个binary tree是否相等
+    def is_same_tree(self, root1, root2):
+        if root1 is None and root2 is None:
+            return True
+        if root1 is None or root2 is None:
+            return False
+        if root1.val != root2.val:
+            return False
+        return self.is_same_tree(root1.left, root2.left) and self.is_same_tree(root1.right, root2.right)
 
-# binary search tree合法性
-def isvalidBST(root):
-    return isvalid2BST(root, None, None)
+    # binary search tree合法性
+    def isvalidBST(self, root):
+        return self.isvalid2BST(root, None, None)
 
-# 如果是左子树，那么最大值是root，最小值是空；如果是右子树，最大值是空，最小值是root
-def isvalid2BST(root, min, max):
-    if not root:
-        return True
-    if min is not None and min.val >= root.val:
-        return False
-    if max is not None and max.val <= root.val:
-        return False
-    return isvalid2BST(root.left, min, root) and isvalid2BST(root.right, root, max)
+    # 如果是左子树，那么最大值是root，最小值是空；如果是右子树，最大值是空，最小值是root
+    def isvalid2BST(self, root, min, max):
+        if not root:
+            return True
+        if min is not None and min.val >= root.val:
+            return False
+        if max is not None and max.val <= root.val:
+            return False
+        return self.isvalid2BST(root.left, min, root) and self.isvalid2BST(root.right, root, max)
 
-# 插入一个值
-def insert_value(root, value):
-    if not root:
-        return TreeNode(value)
-    if root.val > value:
-        root.left = insert_value(root.left, value)
-    if root.val < value:
-        root.right = insert_value(root.right, value)
-    return root
+    # 插入一个值
+    def insert_value(self, root, value):
+        if not root:
+            return TreeNode(value)
+        if root.val > value:
+            root.left = self.insert_value(root.left, value)
+        if root.val < value:
+            root.right = self.insert_value(root.right, value)
+        return root
 
+    # 判断BST中是否存在一个数
+    def isinBST(self, root, target):
+        if not root:
+            return False
+        if root.val == target:
+            return True
+        if root.val > target:
+            return self.isinBST(root.left, target)
+        if root.val < target:
+            return self.isinBST(root.right, target)
 
-# 判断BST中是否存在一个数
-def isinBST(root, target):
-    if not root:
-        return False
-    if root.val == target:
-        return True
-    if root.val > target:
-        return isinBST(root.left, target)
-    if root.val < target:
-        return isinBST(root.right, target)
+    # 二叉树转换为单链表
+    def flatten(self, root) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        if not root:
+            return
+
+        # 递归调用
+        self.flatten(root.left)
+        self.flatten(root.right)
+
+        # 后序遍历：左-右-根
+        # 左右子树拉平成链表
+        left = root.left
+        right = root.right
+
+        # 左子树作为右子树
+        root.left = None
+        root.right = left
+
+        # 原先右子树接到当前右子树末端
+        p = root
+        # 找到当前右子树末端
+        while p.right is not None:
+            p = p.right
+        p.right = right
+
+    def tree_2_list(self, root):
+        if not root:
+            return
+        res = []
+        while root:
+            res.append(root.val)
+            root = root.right
+        return res
+
+    # 二叉树转换为双向链表
+    def Convert(self, pRootOfTree):
+        # write code here
+        if not pRootOfTree:
+            return
+        p = pRootOfTree
+        arr = []
+        resarr = []
+        # 中序遍历
+        while p or arr:
+            if p:
+                arr.append(p)
+                p = p.left
+            else:
+                node = arr.pop()
+                resarr.append(node)
+                p = node.right
+        # 双向链接
+        res = resarr[0]
+        while resarr:
+            tmp = resarr.pop(0)
+            if resarr:
+                tmp.right = resarr[0]
+                resarr[0].left = tmp
+        return res
+
+    # 二叉树最近公共祖先
+    def lowest_common_ancestor(self, root, a, b):
+        if root is None or root == a or root == b:
+            return root
+        left = self.lowest_common_ancestor(root.left, a, b)
+        right = self.lowest_common_ancestor(root.right, a, b)
+        if left is not None and right is not None:
+            return root
+        if left is None and right is not None:
+            return right
+        if right is None and left is not None:
+            return left
+        return None
+
 
 
 if __name__ == "__main__":
-    l1 = TreeNode(1)
-    l2 = TreeNode(3)
-    l3 = TreeNode(4)
-    l4 = TreeNode(5)
-    l1.left = l2
-    l1.right = l3
-    l2.right = l4
+    tns = [TreeNode(i+1) for i in range(4)]
+    tns[0].left = tns[3]
+    tns[0].right = tns[1]
+    tns[1].right = tns[2]
     s = Solution()
-    print(s.preorder(l1))
-    print(s.inorder(l1))
-    print(s.postorder(l1))
-    print("------")
-    s1 = IterSolution()
-    print(s1.preorder(l1))
-    print(s1.inorder(l1))
-    print(s1.postorder(l1))
-    print(s1.bfs(l1))
+    # import pdb
+    # pdb.set_trace()
+    print(s.pre_order(tns[0]))
+    print(s.in_order(tns[0]))
+    print(s.post_order(tns[0]))
+    print(s.cfs(tns[0]))
+    print(s.find_all_path(tns[0], 6))
+    print(s.all_tree_path(tns[0]))
 
-    r1 = TreeNode(6)
-    r1.left = l2
-    r2 = TreeNode(1)
-    r2.right = l2
-    # print(is_same_tree(r1,r2))
-    print(isvalidBST(r1))
-    print(isinBST(r1, 4))
-    res = insert_value(r1, 9)
-    print(res.val, res.left.val, res.right.val)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

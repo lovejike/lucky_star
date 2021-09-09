@@ -35,6 +35,56 @@ class Solution(object):
                 res.append(i)
         return res
 
+    # 第一种: 判断数组中倒数第K大的数
+    def find_k_largest1(self, in_list, k):
+        in_list.sort()
+        return in_list[-k]
+
+    # 第二种: 判断数组中倒数第K大的数
+    def find_k_largest2(in_list, k):
+        kmax = [float('-inf')] * k
+        for i in range(len(in_list)):
+            j = 0
+            while j < k:
+                if in_list[i] > kmax[j]:
+                    kmax[j + 1:] = kmax[j:k - 1]
+                    kmax[j] = in_list[i]
+                    break
+                else:
+                    j += 1
+        return kmax[k - 1]
+
+    # 计算数字的平方根
+    def dichotomy_sqrt(x):
+        index = -1
+        low = 0
+        high = x
+        while low <= high:
+            mid = (low + high) // 2
+            if mid * mid < x:
+                index = mid
+                low = mid + 1
+            else:
+                high = mid - 1
+
+        return index
+
+    # 三角形最大周长
+    def largest_perimeter(self, list):
+        if not list:
+            return 0
+        if len(list) < 3:
+            return 0
+        sorted(list)
+        i = len(list) - 1
+        while i >= 2:
+            if list[i] < list[i - 1] + list[i - 2]:
+                return list[i - 1] + list[i - 2] + list[i]
+            else:
+                i -= 1
+        return 0
+
+
 if __name__ == "__main__":
     s = Solution()
     print(s.numsof1(7))
