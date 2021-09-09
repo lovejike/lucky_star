@@ -1,5 +1,6 @@
-# 判断有效的括号
+
 class Solution:
+    # 判断有效的括号
     def isValid(self, s: str) -> bool:
         if not s:
             return
@@ -21,8 +22,9 @@ class Solution:
         return not stack
 
 
-# 判断是否是回文字符串
+
 class Solution:
+    # 判断是否是回文字符串
     def isPalindrome(self, s: str) -> bool:
         if not s:
             return
@@ -38,9 +40,10 @@ class Solution:
         return True
 
 
-# 反转字符串
+
 class Solution:
-    def reverseString(self, s: List[str]) -> None:
+    # 反转字符串
+    def reverseString(self, s) -> None:
         """
         Do not return anything, modify s in-place instead.
         """
